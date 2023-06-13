@@ -282,14 +282,14 @@ const addSatelliteMarker = ([satName, satrec]) => {
     name: satName,
     position: Cartesian3.fromArray(pos),
 
-    point: {
-      pixelSize: 8,
-      color: Color.GREEEN,
-    },
-
-    // billboard: {
-    //   image: "src/satImg.png",
+    // point: {
+    //   pixelSize: 8,
+    //   color: Color.GREEEN,
     // },
+
+    billboard: {
+      image: "src/satImg.png",
+    },
     label: {
       show: false,
       text: satName,
@@ -515,58 +515,58 @@ handler.setInputAction((input) => {
   checkCameraZoom();
 }, ScreenSpaceEventType.WHEEL);
 let a = 0;
-// function addMarker(cartesian, visibility) {
-//   const entity = entities.add({
-//     // billboard: {
-//     //   image: "src/locationPin.png",
+function addMarker(cartesian, visibility) {
+  const entity = entities.add({
+    billboard: {
+      image: "src/locationPin.png",
 
-//     //   scale: 1,
-//     // },
-//     point: {
-//       pixelSize: 8,
-//       color: Color.GREEN,
-//     },
-//     label: {
-//       show: visibility,
-//       position: cartesian,
-//       showBackground: true,
-//       font: "16px monospace",
-//       horizontalOrigin: HorizontalOrigin.CENTER,
-//       verticalOrigin: VerticalOrigin.BOTTOM,
-//       // pixelOffset: new Cartesian2(10, 0),
-//       // eyeOffset: Cartesian3.fromElements(0, 0, -10000),
-//     },
-//   });
-//   if (cartesian) {
-//     handler.setInputAction(function (click) {
-//       if (cartesian) {
-//         const cartographic = Cartographic.fromCartesian(cartesian);
-//         const longitudeString = Math.toDegrees(cartographic.longitude).toFixed(
-//           2
-//         );
-//         const latitudeString = Math.toDegrees(cartographic.latitude).toFixed(2);
-//         // Coordinates
-//         console.log(longitudeString.slice(-7), latitudeString.slice(-7));
-//         entity.position = cartesian;
-//         // entity.label.show = true;
-//         // entity.label.text =
-//         //   `Lon: ${`   ${longitudeString}`.slice(-7)}\u00B0` +
-//         //   `\nLat: ${`   ${latitudeString}`.slice(-7)}\u00B0`;
-//         markerId.push(entity.id);
-//       } else {
-//         entity.label.show = false;
-//       }
-//     }, ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-//   } else {
-//     entity.label.show = false;
-//   }
-// }
+      scale: 1,
+    },
+    // point: {
+    //   pixelSize: 8,
+    //   color: Color.GREEN,
+    // },
+    label: {
+      show: visibility,
+      position: cartesian,
+      showBackground: true,
+      font: "16px monospace",
+      horizontalOrigin: HorizontalOrigin.CENTER,
+      verticalOrigin: VerticalOrigin.BOTTOM,
+      // pixelOffset: new Cartesian2(10, 0),
+      // eyeOffset: Cartesian3.fromElements(0, 0, -10000),
+    },
+  });
+  if (cartesian) {
+    handler.setInputAction(function (click) {
+      if (cartesian) {
+        const cartographic = Cartographic.fromCartesian(cartesian);
+        const longitudeString = Math.toDegrees(cartographic.longitude).toFixed(
+          2
+        );
+        const latitudeString = Math.toDegrees(cartographic.latitude).toFixed(2);
+        // Coordinates
+        console.log(longitudeString.slice(-7), latitudeString.slice(-7));
+        entity.position = cartesian;
+        // entity.label.show = true;
+        // entity.label.text =
+        //   `Lon: ${`   ${longitudeString}`.slice(-7)}\u00B0` +
+        //   `\nLat: ${`   ${latitudeString}`.slice(-7)}\u00B0`;
+        markerId.push(entity.id);
+      } else {
+        entity.label.show = false;
+      }
+    }, ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
+  } else {
+    entity.label.show = false;
+  }
+}
 
-// //  Mark Places
-// handler.setInputAction(function (movement) {
-//   const cartesian = viewer.camera.pickEllipsoid(
-//     movement.endPosition,
-//     scene.globe.ellipsoid
-//   );
-//   addMarker(cartesian, true);
-// }, ScreenSpaceEventType.MOUSE_MOVE);
+//  Mark Places
+handler.setInputAction(function (movement) {
+  const cartesian = viewer.camera.pickEllipsoid(
+    movement.endPosition,
+    scene.globe.ellipsoid
+  );
+  addMarker(cartesian, true);
+}, ScreenSpaceEventType.MOUSE_MOVE);
