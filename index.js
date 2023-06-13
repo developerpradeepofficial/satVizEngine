@@ -282,14 +282,14 @@ const addSatelliteMarker = ([satName, satrec]) => {
     name: satName,
     position: Cartesian3.fromArray(pos),
 
-    point: {
-      pixelSize: 8,
-      color: Color.GREEEN,
-    },
-
-    // billboard: {
-    //   image: "src/satImg.png",
+    // point: {
+    //   pixelSize: 8,
+    //   color: Color.GREEEN,
     // },
+
+    billboard: {
+      image: "src/satImg.png",
+    },
     label: {
       show: false,
       text: satName,
