@@ -1,0 +1,45 @@
+{
+  "name": "satviz-web-version",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Pradeep Saravanan",
+  "keywords": [
+    "cesium",
+    "CesiumJS",
+    "webpack"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "build": "webpack --config webpack.config.js",
+    "start": "webpack serve --config webpack.config.js --open"
+  },
+  "devDependencies": {
+    "cesium": "^1.105.2",
+    "copy-webpack-plugin": "^9.0.1",
+    "css-loader": "^6.2.0",
+    "dotenv-webpack": "^8.0.1",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.3.2",
+    "json-loader": "^0.5.7",
+    "strip-pragma-loader": "^1.0.1",
+    "style-loader": "^3.2.1",
+    "url-loader": "^4.1.1",
+    "webpack": "^5.51.1",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.3.1"
+  },
+  "dependencies": {
+    "bootstrap": "^5.2.3",
+    "d3.js": "^0.0.2-security",
+    "dotenv": "^16.0.3",
+    "fs": "^0.0.1-security",
+    "jquery": "^3.7.0",
+    "popper.js": "^1.16.1",
+    "raw-loader": "^4.0.2",
+    "satellite.js": "^5.0.0"
+  },
+  "directories": {
+    "doc": "doc"
+  },
+  "license": "ISC"
+}

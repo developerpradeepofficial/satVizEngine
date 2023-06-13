@@ -1,0 +1,38 @@
+{
+  "active": {
+    "label-en": "All active",
+    "url": "http://www.celestrak.com/NORAD/elements/active.txt"
+  },
+  "brightest": {
+    "label-en": "The brightest",
+    "url": "http://www.celestrak.com/NORAD/elements/visual.txt"
+  },
+  "weather": {
+    "label-en": "Weather",
+    "url": "http://www.celestrak.com/NORAD/elements/weather.txt"
+  },
+  "geosync": {
+    "label-en": "Geosynchronous",
+    "url": "http://www.celestrak.com/NORAD/elements/geo.txt"
+  },
+  "starlink": {
+    "label-en": "Starlink",
+    "url": "http://www.celestrak.com/NORAD/elements/starlink.txt"
+  },
+  "gps": {
+    "label-en": "GPS",
+    "url": "http://www.celestrak.com/NORAD/elements/gps-ops.txt"
+  },
+  "glonass": {
+    "label-en": "GLONASS",
+    "url": "http://www.celestrak.com/NORAD/elements/glo-ops.txt"
+  },
+  "galileo": {
+    "label-en": "Galileo",
+    "url": "http://www.celestrak.com/NORAD/elements/galileo.txt"
+  },
+  "beidou": {
+    "label-en": "Beidou",
+    "url": "http://www.celestrak.com/NORAD/elements/beidou.txt"
+  }
+}

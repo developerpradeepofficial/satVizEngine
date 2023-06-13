@@ -1,0 +1,1 @@
+SatilliteVisualEngineWebVesion is an alternate model for the Python-based Satellite Visual Engine project. This web-based version provides a user-friendly interface for visualizing satellite data and offers additional features not found in the original Python version.
