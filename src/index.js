@@ -519,8 +519,7 @@ function addMarker(cartesian, visibility) {
   const entity = entities.add({
     billboard: {
       image: "Assets/Images/locationPin.png",
-      scale: 0.2,
-      scaleByDistance: 2,
+      scale: 0.5,
     },
     // point: {
     //   pixelSize: 8,
