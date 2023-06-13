@@ -524,7 +524,7 @@ function addMarker(cartesian, visibility) {
     // },
     point: {
       pixelSize: 8,
-      color: Color.RED,
+      color: Color.GREEN,
     },
     label: {
       show: visibility,
