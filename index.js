@@ -282,14 +282,14 @@ const addSatelliteMarker = ([satName, satrec]) => {
     name: satName,
     position: Cartesian3.fromArray(pos),
 
-    // point: {
-    //   pixelSize: 8,
-    //   color: Color.YELLOW,
-    // },
-
-    billboard: {
-      image: "src/satImg.png",
+    point: {
+      pixelSize: 8,
+      color: Color.YELLOW,
     },
+
+    // billboard: {
+    //   image: "src/satImg.png",
+    // },
     label: {
       show: false,
       text: satName,
@@ -517,10 +517,14 @@ handler.setInputAction((input) => {
 let a = 0;
 function addMarker(cartesian, visibility) {
   const entity = entities.add({
-    billboard: {
-      image: "src/locationPin.png",
+    // billboard: {
+    //   image: "src/locationPin.png",
 
-      scale: 1,
+    //   scale: 1,
+    // },
+    point: {
+      pixelSize: 8,
+      color: Color.YELLOW,
     },
     label: {
       show: visibility,
