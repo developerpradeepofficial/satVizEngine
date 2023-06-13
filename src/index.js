@@ -543,10 +543,10 @@ function addMarker(cartesian, visibility) {
         // Coordinates
         console.log(longitudeString.slice(-7), latitudeString.slice(-7));
         entity.position = cartesian;
-        // entity.label.show = true;
-        // entity.label.text =
-        //   `Lon: ${`   ${longitudeString}`.slice(-7)}\u00B0` +
-        //   `\nLat: ${`   ${latitudeString}`.slice(-7)}\u00B0`;
+        entity.label.show = true;
+        entity.label.text =
+          `Lon: ${`   ${longitudeString}`.slice(-7)}\u00B0` +
+          `\nLat: ${`   ${latitudeString}`.slice(-7)}\u00B0`;
         markerId.push(entity.id);
       } else {
         entity.label.show = false;
