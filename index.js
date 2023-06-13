@@ -411,7 +411,7 @@ const getData = async (targetUrl) => {
     const bar = document.getElementById("bar");
 
     const response = await fetch(
-      `http://www.celestrak.com/NORAD/elements/gp.php?GROUP=${targetUrl}`
+      `https://www.celestrak.com/NORAD/elements/gp.php?GROUP=${targetUrl}`
     );
     let textLines = (await response.text()).split(/\r?\n/); //split file to separate lines
 
