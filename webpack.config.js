@@ -13,7 +13,7 @@ module.exports = {
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, "build"),
   },
   resolve: {
     fallback: { https: false, zlib: false, http: false, url: false },
@@ -53,7 +53,7 @@ module.exports = {
   mode: "development",
   devtool: "eval",
   devServer: {
-    contentBase: path.join(__dirname, "dist"),
+    contentBase: path.join(__dirname, "build"),
   },
   devServer: {
     static: "./",
