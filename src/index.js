@@ -288,7 +288,7 @@ const addSatelliteMarker = ([satName, satrec]) => {
     // },
 
     billboard: {
-      image: "dist/Assets/Images/satImg.png",
+      image: "Assets/Images/satImg.png",
     },
     label: {
       show: false,
