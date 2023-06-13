@@ -518,7 +518,7 @@ let a = 0;
 function addMarker(cartesian, visibility) {
   const entity = entities.add({
     billboard: {
-      image: "./src/locationPin.png",
+      image: "src/locationPin.png",
       scale: 0.2,
     },
     label: {
