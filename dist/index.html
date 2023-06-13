@@ -1,67 +1,69 @@
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
-    />
-    <title>Team Infinity</title>
-  <script defer src="app.js"></script></head>
-  <body>
-    <noscript>Your browser does not support JavaScript!</noscript>
-    <div id="cesiumContainer"></div>
-
-    <div id="ui" style="visibility: hidden">
-      <button
-        class="cesium-button"
-        type="button"
-        id="menu-button"
-        class="toolbar"
-        title="Menu"
-      >
-        <i class="fa fa-bars"></i>
-      </button>
-
-      <div id="options" class="toolbar">
-        <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="sw1" />
-          <label class="custom-control-label" for="sw1" id="tr-lighting"
-            >Lighting</label
-          >
-        </div>
-        <div class="custom-control custom-switch">
-          <input type="checkbox" class="custom-control-input" id="sw2" />
-          <label class="custom-control-label" for="sw2" id="tr-camera-lock"
-            >Camera lock</label
-          >
-        </div>
-
-        <div class="rows">
-          <button
-            class="cesium-button"
-            type="button"
-            id="tr-disable-satellites"
-          >
-            Remove satellites
-          </button>
-          <button class="cesium-button" type="button" id="tr-disable-markers">
-            Remove Markers
-          </button>
-          <h4 id="tr-satellites-available">Satellites available:</h4>
-          <div id="buttons-entry-point"></div>
-        </div>
-      </div>
-
-      <div id="progress-bar" class="toolbar" style="visibility: hidden">
-        <div id="bar"></div>
-      </div>
-
-      <div id="fps-counter" class="toolbar">FPS: <span id="fps"></span></div>
-    </div>
-
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-  </body>
-</html>
+<head><script defer src="app.js"></script></head>Html Webpack Plugin:
+<pre>
+  Error: Child compilation failed:
+  Module not found: Error: Can't resolve 'D:\Web_dev\satVizEngine\src\index.html' in 'D:\Web_dev\satVizEngine'
+  ModuleNotFoundError: Module not found: Error: Can't resolve 'D:\Web_dev\satVizEngine\src\index.html' in 'D:\Web_dev\satVizEngine'
+      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\Compilation.js:2022:28
+      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:817:13
+      at eval (eval at create (D:\Web_dev\satVizEngine\node_modules\tapable\lib\HookCodeFactory.js:33:10), <anonymous>:10:1)
+      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:275:22
+      at eval (eval at create (D:\Web_dev\satVizEngine\node_modules\tapable\lib\HookCodeFactory.js:33:10), <anonymous>:9:1)
+      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:448:22
+      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:118:11
+      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:689:25
+      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:893:8
+      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:1013:5
+  
+  - Compilation.js:2022 
+    [satVizEngine]/[webpack]/lib/Compilation.js:2022:28
+  
+  - NormalModuleFactory.js:817 
+    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:817:13
+  
+  
+  - NormalModuleFactory.js:275 
+    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:275:22
+  
+  
+  - NormalModuleFactory.js:448 
+    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:448:22
+  
+  - NormalModuleFactory.js:118 
+    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:118:11
+  
+  - NormalModuleFactory.js:689 
+    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:689:25
+  
+  - NormalModuleFactory.js:893 
+    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:893:8
+  
+  - NormalModuleFactory.js:1013 
+    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:1013:5
+  
+  - child-compiler.js:169 
+    [satVizEngine]/[html-webpack-plugin]/lib/child-compiler.js:169:18
+  
+  - Compiler.js:551 finalCallback
+    [satVizEngine]/[webpack]/lib/Compiler.js:551:5
+  
+  - Compiler.js:577 
+    [satVizEngine]/[webpack]/lib/Compiler.js:577:11
+  
+  - Compiler.js:1199 
+    [satVizEngine]/[webpack]/lib/Compiler.js:1199:17
+  
+  
+  - Hook.js:18 Hook.CALL_ASYNC_DELEGATE [as _callAsync]
+    [satVizEngine]/[tapable]/lib/Hook.js:18:14
+  
+  - Compiler.js:1195 
+    [satVizEngine]/[webpack]/lib/Compiler.js:1195:33
+  
+  - Compilation.js:2795 finalCallback
+    [satVizEngine]/[webpack]/lib/Compilation.js:2795:11
+  
+  - Compilation.js:3100 
+    [satVizEngine]/[webpack]/lib/Compilation.js:3100:11
+  
+  
+</pre>
