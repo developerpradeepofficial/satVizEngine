@@ -284,11 +284,11 @@ const addSatelliteMarker = ([satName, satrec]) => {
 
     // point: {
     //   pixelSize: 8,
-    //   color: Color.GREEEN,
+    //   color: Color.YELLOW,
     // },
 
     billboard: {
-      image: "Assets/Images/satImg.png",
+      image: "src/satImg.png",
     },
     label: {
       show: false,
@@ -411,7 +411,7 @@ const getData = async (targetUrl) => {
     const bar = document.getElementById("bar");
 
     const response = await fetch(
-      `https://www.celestrak.com/NORAD/elements/gp.php?GROUP=${targetUrl}`
+      `http://www.celestrak.com/NORAD/elements/gp.php?GROUP=${targetUrl}`
     );
     let textLines = (await response.text()).split(/\r?\n/); //split file to separate lines
 
@@ -518,13 +518,9 @@ let a = 0;
 function addMarker(cartesian, visibility) {
   const entity = entities.add({
     billboard: {
-      image: "Assets/Images/locationPin.png",
-      scale: 0.5,
+      image: "src/locationPin.png",
+      scale: 0.2,
     },
-    // point: {
-    //   pixelSize: 8,
-    //   color: Color.GREEN,
-    // },
     label: {
       show: visibility,
       position: cartesian,
