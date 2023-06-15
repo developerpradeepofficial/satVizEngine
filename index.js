@@ -23,6 +23,7 @@ import {
   createOsmBuildings,
   Cartographic,
   Math,
+  EntityCluster,
 } from "cesium";
 // const fs = require("fs");
 import "cesium/Build/Cesium/Widgets/widgets.css";
@@ -47,12 +48,12 @@ const viewer = new Viewer("cesiumContainer", {
   sceneModePicker: true, //disables scene mode picker
   shouldAnimate: true,
   selectionIndicator: true,
-
   // sceneMode: SceneMode.SCENE2D,
 });
+const pin = new EntityCluster(false);
 viewer.scene.primitives.add(createOsmBuildings());
 // Add Cesium OSM Buildings, a global 3D buildings layer.
-// viewer.scene.primitives.add(createOsmBuildings());
+viewer.scene.primitives.add(createOsmBuildings());
 
 // Create a new entity
 
@@ -65,6 +66,7 @@ Camera.DEFAULT_VIEW_RECTANGLE = Rectangle.fromDegrees(-60, -40, 60, 80); //sets 
 //     return el.category !== "Cesium ion";
 //   });
 // viewModel.selectedImagery = viewModel.imageryProviderViewModels[0]; //select default imageryProvider
+
 const scene = viewer.scene;
 const globe = viewer.scene.globe;
 const clock = viewer.clock;
@@ -85,12 +87,13 @@ globe.nightFadeInDistance = 40000000;
 globe.nightFadeOutDistance = 10000000;
 
 document.getElementById("ui").style.visibility = "visible"; //makes options visible after loading javascript
-let satUpdateIntervalTime = 33; //update interval in ms
-const orbitSteps = 44; //number of steps in predicted orbit
+let satUpdateIntervalTime = 10; //update interval in ms
+const orbitSteps = 77; //number of steps in predicted orbit
 let satellitesData = []; //currently displayed satellites TLE data (name, satrec)
 let displayedOrbit = undefined; //displayed orbit data [satrec, refresh time in seconds]
 let lastOrbitUpdateTime = JulianDate.now();
 
+// Satellite Categories to get from API
 const TLEsources = [
   {
     name: "active",
@@ -164,6 +167,7 @@ if (userLang !== undefined) {
     });
   }
 }
+
 // ADD SOURCES BUTTONS
 const btnsEntryPoint = document.getElementById("buttons-entry-point");
 TLEsources.forEach((src) => {
@@ -268,6 +272,7 @@ const orbitIcrf = (scene, time) => {
 };
 let satID = [],
   markerId = [];
+
 const addSatelliteMarker = ([satName, satrec]) => {
   const posvel = satellite.propagate(
     satrec,
@@ -284,7 +289,7 @@ const addSatelliteMarker = ([satName, satrec]) => {
 
     // point: {
     //   pixelSize: 8,
-    //   color: Color.YELLOW,
+    //   color: Color.GREEEN,
     // },
 
     billboard: {
@@ -293,8 +298,8 @@ const addSatelliteMarker = ([satName, satrec]) => {
     label: {
       show: false,
       text: satName,
-      showBackground: true,
-      font: "16px monospace",
+      // showBackground: true,
+      font: "12px monospace",
       horizontalOrigin: HorizontalOrigin.LEFT,
       verticalOrigin: VerticalOrigin.CENTER,
       pixelOffset: new Cartesian2(10, 0),
@@ -306,7 +311,13 @@ const addSatelliteMarker = ([satName, satrec]) => {
   sat.name = satName;
   // Get satellite Velocity and Position
   var positionAndVelocity = satellite.sgp4(satrec, new Date());
-  sat.description = `<h2>${positionAndVelocity.velocity}</h2>`;
+  console.log(satrec);
+  sat.description = `
+  <ul>
+    <h3><b>Satellite Number: </b>${satrec.satnum}</h3>
+    <h3><b>Epochdays: </b>${satrec.epochdays}</h3>
+    <h3><b>Epochyr: </b>${satrec.epochyr}</h3>
+  </ul>`;
   // console.log(positionAndVelocity.velocity);
 };
 
@@ -339,12 +350,12 @@ const calculateOrbit = (satrec) => {
 
     //polyline material
     const polylineMaterial = new Material.fromType("Color"); //create polyline material
-    polylineMaterial.uniforms.color = Color.GREEN; //set the material color
+    polylineMaterial.uniforms.color = Color.BLUE; //set the material color
 
     polylines.removeAll();
     polylines.add({
       positions: orbitPoints,
-      width: 4,
+      width: 1,
       material: polylineMaterial,
       id: "orbit",
     });
@@ -411,7 +422,7 @@ const getData = async (targetUrl) => {
     const bar = document.getElementById("bar");
 
     const response = await fetch(
-      `http://www.celestrak.com/NORAD/elements/gp.php?GROUP=${targetUrl}`
+      `https://www.celestrak.com/NORAD/elements/gp.php?GROUP=${targetUrl}`
     );
     let textLines = (await response.text()).split(/\r?\n/); //split file to separate lines
 
@@ -453,7 +464,11 @@ const getData = async (targetUrl) => {
         console.log(error);
         setLoadingData(false);
       }
-      tempSatellitesData.forEach((sat) => addSatelliteMarker(sat)); //create point entities
+      tempSatellitesData.forEach(function (sat) {
+        addSatelliteMarker(sat);
+        console.log(sat);
+      }); //create point entities
+
       satellitesData.push(...tempSatellitesData); //add satellites to updated satellites array
     }
     setLoadingData(false);
@@ -495,7 +510,8 @@ const handler = new ScreenSpaceEventHandler(scene.canvas); //custom event handle
 handler.setInputAction((input) => {
   //left click input action
   let picked = scene.pick(input.position);
-  console.log(picked);
+  // console.log(picked);
+
   if (picked) {
     let entity = defaultValue(picked.id, picked.primitive.id);
     if (entity instanceof Entity) {
@@ -515,11 +531,16 @@ handler.setInputAction((input) => {
   checkCameraZoom();
 }, ScreenSpaceEventType.WHEEL);
 let a = 0;
+
 function addMarker(cartesian, visibility) {
   const entity = entities.add({
-    billboard: {
-      image: "src/locationPin.png",
-      scale: 1,
+    // billboard: {
+    //   image: "src/locationPin.png",
+    //   scale: 0.5,
+    // },
+    point: {
+      pixelSize: 8,
+      color: Color.RED,
     },
     label: {
       show: visibility,
@@ -532,6 +553,8 @@ function addMarker(cartesian, visibility) {
       // eyeOffset: Cartesian3.fromElements(0, 0, -10000),
     },
   });
+
+  // entity.description = `Coordinates: ${cartesian}`;
   if (cartesian) {
     handler.setInputAction(function (click) {
       if (cartesian) {
@@ -543,10 +566,10 @@ function addMarker(cartesian, visibility) {
         // Coordinates
         console.log(longitudeString.slice(-7), latitudeString.slice(-7));
         entity.position = cartesian;
-        // entity.label.show = true;
-        // entity.label.text =
-        //   `Lon: ${`   ${longitudeString}`.slice(-7)}\u00B0` +
-        //   `\nLat: ${`   ${latitudeString}`.slice(-7)}\u00B0`;
+        entity.label.show = true;
+        entity.label.text =
+          `Lon: ${`   ${longitudeString}`.slice(-7)}\u00B0` +
+          `\nLat: ${`   ${latitudeString}`.slice(-7)}\u00B0`;
         markerId.push(entity.id);
       } else {
         entity.label.show = false;
@@ -563,5 +586,121 @@ handler.setInputAction(function (movement) {
     movement.endPosition,
     scene.globe.ellipsoid
   );
+  mousePosition = movement.endPosition;
+
   addMarker(cartesian, true);
 }, ScreenSpaceEventType.MOUSE_MOVE);
+
+// Globe Navigation
+
+const canvas = viewer.canvas;
+canvas.setAttribute("tabindex", "0"); // needed to put focus on the canvas
+canvas.onclick = function () {
+  canvas.focus();
+};
+
+const ellipsoid = scene.globe.ellipsoid;
+
+let startMousePosition;
+let mousePosition;
+const flags = {
+  looking: false,
+  moveForward: false,
+  moveBackward: false,
+  moveUp: false,
+  moveDown: false,
+  moveLeft: false,
+  moveRight: false,
+};
+
+handler.setInputAction(function (movement) {
+  flags.looking = true;
+  mousePosition = startMousePosition = Cartesian3.clone(movement.position);
+}, ScreenSpaceEventType.LEFT_DOWN);
+
+handler.setInputAction(function (position) {
+  flags.looking = false;
+}, ScreenSpaceEventType.LEFT_UP);
+
+function getFlagForKeyCode(keyCode) {
+  switch (keyCode) {
+    case "W".charCodeAt(0):
+      return "moveForward";
+    case "S".charCodeAt(0):
+      return "moveBackward";
+    case "Q".charCodeAt(0):
+      return "moveUp";
+    case "E".charCodeAt(0):
+      return "moveDown";
+    case "D".charCodeAt(0):
+      return "moveRight";
+    case "A".charCodeAt(0):
+      return "moveLeft";
+    default:
+      return undefined;
+  }
+}
+
+document.addEventListener(
+  "keydown",
+  function (e) {
+    const flagName = getFlagForKeyCode(e.keyCode);
+    if (typeof flagName !== "undefined") {
+      flags[flagName] = true;
+    }
+  },
+  false
+);
+
+document.addEventListener(
+  "keyup",
+  function (e) {
+    const flagName = getFlagForKeyCode(e.keyCode);
+    if (typeof flagName !== "undefined") {
+      flags[flagName] = false;
+    }
+  },
+  false
+);
+
+viewer.clock.onTick.addEventListener(function (clock) {
+  const camera = viewer.camera;
+
+  if (flags.looking) {
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+
+    // Coordinate (0.0, 0.0) will be where the mouse was clicked.
+    const x = (mousePosition.x - startMousePosition.x) / width;
+    const y = -(mousePosition.y - startMousePosition.y) / height;
+
+    const lookFactor = 0.05;
+    camera.lookRight(x * lookFactor);
+    camera.lookUp(y * lookFactor);
+  }
+
+  // Change movement speed based on the distance of the camera to the surface of the ellipsoid.
+  const cameraHeight = ellipsoid.cartesianToCartographic(
+    camera.position
+  ).height;
+  const moveRate = cameraHeight / 100.0;
+
+  if (flags.moveForward) {
+    camera.moveForward(moveRate);
+  }
+  if (flags.moveBackward) {
+    camera.moveBackward(moveRate);
+  }
+  if (flags.moveUp) {
+    camera.moveUp(moveRate);
+  }
+  if (flags.moveDown) {
+    camera.moveDown(moveRate);
+  }
+  if (flags.moveLeft) {
+    camera.moveLeft(moveRate);
+  }
+  if (flags.moveRight) {
+    camera.moveRight(moveRate);
+  }
+});
