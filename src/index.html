@@ -7,6 +7,13 @@
       content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
     />
     <title>Team Infinity</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
   </head>
   <body>
     <noscript>Your browser does not support JavaScript!</noscript>
@@ -59,13 +66,17 @@
 
       <div id="fps-counter" class="toolbar">FPS: <span id="fps"></span></div>
     </div>
-    <div>
-      <ul class="infoPanel">
+    <div class="infoBtnContainer">
+      <button class="infoBtn" id="infoBtn">
+        <i class="fa-solid fa-question"></i>
+      </button>
+      <ul class="infoPanel" id="infoPanel">
         <li>w/s - move forward/backward</li>
         <li>a/d - move left/right</li>
         <li>q/e - move up/down</li>
       </ul>
     </div>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
