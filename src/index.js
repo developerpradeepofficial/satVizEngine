@@ -704,3 +704,19 @@ viewer.clock.onTick.addEventListener(function (clock) {
     camera.moveRight(moveRate);
   }
 });
+
+
+let infoBtn = document.getElementById("infoBtn");
+let infoPanel = document.getElementById("infoPanel");
+function showNav(e) {
+  if (infoPanel.style.display == "block") {
+    infoPanel.style.display = "none";
+  } else {
+    infoPanel.style.display = "block";
+  }
+}
+
+infoBtn.addEventListener("click", (e) => {
+  showNav(e);
+});
+
