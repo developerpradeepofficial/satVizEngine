@@ -100,10 +100,25 @@ input[disabled] + label.custom-control-label {
 }
 
 .infoPanel {
+  display: none;
   width: max-content;
   position: absolute;
   list-style: none;
   top: 3rem;
-  right: 1rem;
+  left: 0rem;
+  color: #fff;
+}
+.infoBtnContainer {
+  position: absolute;
+  top: 0.5rem;
+  left: 2.8rem;
+  transition: all 0.5s;
+}
+.infoBtnContainer > .infoBtn {
+  outline: none;
+  border: 0.6px solid #c7c6c693;
+  padding: 0.2rem 0.8rem;
+  border-radius: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.8);
   color: #fff;
 }
