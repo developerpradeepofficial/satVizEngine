@@ -25,6 +25,7 @@ import {
   Math,
   EntityCluster,
 } from "cesium";
+
 // const fs = require("fs");
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import "./css/main.css";
@@ -35,6 +36,7 @@ import "popper.js/dist/umd/popper.min.js";
 import "bootstrap/dist/js/bootstrap.min.js";
 const satellite = require("satellite.js");
 // Your access token can be found at: https://cesium.com/ion/tokens.
+
 // This is the default access token
 Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYWE1OWUxNy1mMWZiLTQzYjYtYTQ0OS1kMWFjYmFkNjc5YzciLCJpZCI6NTc3MzMsImlhdCI6MTYyNzg0NTE4Mn0.XcKpgANiY19MC4bdFUXMVEBToBmqS8kuYpUlxJHYZxk";
@@ -49,14 +51,14 @@ const viewer = new Viewer("cesiumContainer", {
   shouldAnimate: true,
   selectionIndicator: true,
   // sceneMode: SceneMode.SCENE2D,
+  navigationHelpButton: false,
 });
-const pin = new EntityCluster(false);
-viewer.scene.primitives.add(createOsmBuildings());
+// viewer.scene.primitives.add(createOsmBuildings());
+
 // Add Cesium OSM Buildings, a global 3D buildings layer.
-viewer.scene.primitives.add(createOsmBuildings());
+// viewer.scene.primitives.add(createOsmBuildings());
 
 // Create a new entity
-
 Camera.DEFAULT_VIEW_RECTANGLE = Rectangle.fromDegrees(-60, -40, 60, 80); //sets default view
 
 //REMOVE BING IMAGERY
@@ -65,7 +67,7 @@ Camera.DEFAULT_VIEW_RECTANGLE = Rectangle.fromDegrees(-60, -40, 60, 80); //sets 
 //   viewModel.imageryProviderViewModels.filter((el) => {
 //     return el.category !== "Cesium ion";
 //   });
-// viewModel.selectedImagery = viewModel.imageryProviderViewModels[0]; //select default imageryProvider
+// viewModel.selectedImagery = viewModel.imageryProviderViewModels[2]; //select default imageryProvider
 
 const scene = viewer.scene;
 const globe = viewer.scene.globe;
@@ -88,7 +90,7 @@ globe.nightFadeOutDistance = 10000000;
 
 document.getElementById("ui").style.visibility = "visible"; //makes options visible after loading javascript
 let satUpdateIntervalTime = 10; //update interval in ms
-const orbitSteps = 77; //number of steps in predicted orbit
+const orbitSteps = 33; //number of steps in predicted orbit
 let satellitesData = []; //currently displayed satellites TLE data (name, satrec)
 let displayedOrbit = undefined; //displayed orbit data [satrec, refresh time in seconds]
 let lastOrbitUpdateTime = JulianDate.now();
@@ -181,6 +183,7 @@ TLEsources.forEach((src) => {
 
 //===============================================================
 //USER INTERFACE ACTIONS
+//===============================================================
 //menu button
 document.getElementById("menu-button").onclick = () => {
   let o = document.getElementById("options");
@@ -241,6 +244,7 @@ const deleteMarkers = () => {
     markerId = [];
   });
 };
+
 //camera lock functions
 const disableCamIcrf = () => {
   //locks camera on the globe
@@ -251,6 +255,7 @@ const enableCamIcrf = () => {
   //locks camera in space
   scene.postUpdate.addEventListener(cameraIcrf);
 };
+
 const cameraIcrf = (scene, time) => {
   if (scene.mode !== SceneMode.SCENE3D) {
     return;
@@ -273,52 +278,43 @@ const orbitIcrf = (scene, time) => {
 let satID = [],
   markerId = [];
 
+//===============================================================
+//Satellite Adding Function.
+//===============================================================
 const addSatelliteMarker = ([satName, satrec]) => {
   const posvel = satellite.propagate(
     satrec,
     JulianDate.toDate(clock.currentTime)
   );
+
   const gmst = satellite.gstime(JulianDate.toDate(clock.currentTime));
   const pos = Object.values(satellite.eciToEcf(posvel.position, gmst)).map(
     (el) => (el *= 1000)
   ); //position km->m
 
-  let sat = entities.add({
+  let sat = viewer.entities.add({
     name: satName,
     position: Cartesian3.fromArray(pos),
-
-    // point: {
-    //   pixelSize: 8,
-    //   color: Color.GREEEN,
-    // },
-
     billboard: {
       image: "Assets/Images/satImg.png",
     },
     label: {
       show: false,
       text: satName,
-      // showBackground: true,
+      showBackground: true,
       font: "12px monospace",
-      horizontalOrigin: HorizontalOrigin.LEFT,
-      verticalOrigin: VerticalOrigin.CENTER,
-      pixelOffset: new Cartesian2(10, 0),
-      eyeOffset: Cartesian3.fromElements(0, 0, -10000),
     },
   });
 
   satID.push(sat.id);
   sat.name = satName;
-  // Get satellite Velocity and Position
-  var positionAndVelocity = satellite.sgp4(satrec, new Date());
-  console.log(satrec);
   sat.description = `
   <ul>
     <h3><b>Satellite Number: </b>${satrec.satnum}</h3>
     <h3><b>Epochdays: </b>${satrec.epochdays}</h3>
     <h3><b>Epochyr: </b>${satrec.epochyr}</h3>
   </ul>`;
-  // console.log(positionAndVelocity.velocity);
+  deleteMarkers();
 };
 
 //ORBIT CALCULATION
@@ -351,7 +347,6 @@ const calculateOrbit = (satrec) => {
     //polyline material
     const polylineMaterial = new Material.fromType("Color"); //create polyline material
     polylineMaterial.uniforms.color = Color.BLUE; //set the material color
-
     polylines.removeAll();
     polylines.add({
       positions: orbitPoints,
@@ -531,76 +526,56 @@ handler.setInputAction((input) => {
   checkCameraZoom();
 }, ScreenSpaceEventType.WHEEL);
 let a = 0;
-
+let entity1;
+let cartesian;
 function addMarker(cartesian, visibility) {
-  const entity = entities.add({
-    // billboard: {
-    //   image: "src/locationPin.png",
-    //   scale: 0.5,
-    // },
-    point: {
-      pixelSize: 8,
-      color: Color.RED,
+  entity1 = viewer.entities.add({
+    billboard: {
+      image: "Assets/Images/locationPin.png",
+      scale: 0.5,
     },
     label: {
       show: visibility,
-      position: cartesian,
       showBackground: true,
-      font: "16px monospace",
       horizontalOrigin: HorizontalOrigin.CENTER,
       verticalOrigin: VerticalOrigin.BOTTOM,
-      // pixelOffset: new Cartesian2(10, 0),
-      // eyeOffset: Cartesian3.fromElements(0, 0, -10000),
+      font: "12px monospace",
     },
   });
 
   // entity.description = `Coordinates: ${cartesian}`;
-  if (cartesian) {
-    handler.setInputAction(function (click) {
-      if (cartesian) {
-        const cartographic = Cartographic.fromCartesian(cartesian);
-        const longitudeString = Math.toDegrees(cartographic.longitude).toFixed(
-          2
-        );
-        const latitudeString = Math.toDegrees(cartographic.latitude).toFixed(2);
-        // Coordinates
-        console.log(longitudeString.slice(-7), latitudeString.slice(-7));
-        entity.position = cartesian;
-        entity.label.show = true;
-        entity.label.text =
-          `Lon: ${`   ${longitudeString}`.slice(-7)}\u00B0` +
-          `\nLat: ${`   ${latitudeString}`.slice(-7)}\u00B0`;
-        markerId.push(entity.id);
-      } else {
-        entity.label.show = false;
-      }
-    }, ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-  } else {
-    entity.label.show = false;
-  }
 }
-
-//  Mark Places
-handler.setInputAction(function (movement) {
-  const cartesian = viewer.camera.pickEllipsoid(
-    movement.endPosition,
+// Mark Locations.
+handler.setInputAction(function (click) {
+  cartesian = viewer.camera.pickEllipsoid(
+    click.position,
     scene.globe.ellipsoid
   );
-  mousePosition = movement.endPosition;
-
-  addMarker(cartesian, true);
-}, ScreenSpaceEventType.MOUSE_MOVE);
+  if (cartesian) {
+    const cartographic = Cartographic.fromCartesian(cartesian);
+    const longitudeString = Math.toDegrees(cartographic.longitude).toFixed(2);
+    const latitudeString = Math.toDegrees(cartographic.latitude).toFixed(2);
+    addMarker(cartesian, true);
+    // Coordinates
+    console.log(longitudeString.slice(-7), latitudeString.slice(-7));
+    entity1.position = cartesian;
+    entity1.label.show = true;
+    entity1.label.text =
+      `Lon: ${`   ${longitudeString}`.slice(-7)}\u00B0` +
+      `\nLat: ${`   ${latitudeString}`.slice(-7)}\u00B0`;
+    markerId.push(entity1.id);
+  } else {
+    entity1.label.show = false;
+  }
+}, ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
 // Globe Navigation
-
 const canvas = viewer.canvas;
-canvas.setAttribute("tabindex", "0"); // needed to put focus on the canvas
 canvas.onclick = function () {
   canvas.focus();
 };
 
 const ellipsoid = scene.globe.ellipsoid;
-
 let startMousePosition;
 let mousePosition;
 const flags = {
@@ -705,7 +680,6 @@ viewer.clock.onTick.addEventListener(function (clock) {
   }
 });
 
-
 let infoBtn = document.getElementById("infoBtn");
 let infoPanel = document.getElementById("infoPanel");
 function showNav(e) {
@@ -719,4 +693,3 @@ function showNav(e) {
 infoBtn.addEventListener("click", (e) => {
   showNav(e);
 });
-
