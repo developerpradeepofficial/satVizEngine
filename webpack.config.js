@@ -4,6 +4,7 @@ const cesiumWorkers = "../Build/Cesium/Workers";
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const path = require("path");
 const webpack = require("webpack");
+var favicon = require("favicons-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
@@ -36,6 +37,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./src/index.html",
     }),
+    new favicon("./src/favicon/favicon.ico"),
     // Copy Cesium Assets, Widgets, and Workers to a static directory
     new CopyWebpackPlugin({
       patterns: [
