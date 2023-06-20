@@ -41,11 +41,11 @@ const satellite = require("satellite.js");
 // This is the default access token
 Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYWE1OWUxNy1mMWZiLTQzYjYtYTQ0OS1kMWFjYmFkNjc5YzciLCJpZCI6NTc3MzMsImlhdCI6MTYyNzg0NTE4Mn0.XcKpgANiY19MC4bdFUXMVEBToBmqS8kuYpUlxJHYZxk";
-
+function OpenStreetMapNominatimGeocoder() {}
 // Initialize the Cesium Viewer in the HTML element with the `cesiumContainer` ID.
 const viewer = new Viewer("cesiumContainer", {
   //create viewer
-  geocoder: true, //disables search bar
+  geocoder: true,
   infoBox: true,
   navigationInstructionsInitiallyVisible: false, //disables instructions on start
   sceneModePicker: true, //disables scene mode picker
@@ -157,39 +157,11 @@ const translations = [
       { id: "tr-satellites-available", text: "Satellites available:" },
     ],
   },
-  {
-    language: "ta",
-    strings: [
-      { id: "tr-lighting", text: "விளக்கு" },
-      { id: "tr-camera-lock", text: "கேமரா பூட்டு" },
-      { id: "tr-disable-satellites", text: "செயற்கைக்கோள்களை அகற்று" },
-      { id: "tr-satellites-available", text: "குறிப்பான்களை அகற்று:" },
-    ],
-  },
-  {
-    language: "ml",
-    strings: [
-      { id: "tr-lighting", text: "ലൈറ്റിംഗ്" },
-      { id: "tr-camera-lock", text: "ക്യാമറ ലോക്ക്" },
-      { id: "tr-disable-satellites", text: "ഉപഗ്രഹങ്ങൾ നീക്കം ചെയ്യുക" },
-      { id: "tr-satellites-available", text: "ഉപഗ്രഹങ്ങൾ ലഭ്യമാണ്:" },
-    ],
-  },
-  {
-    language: "ka",
-    strings: [
-      { id: "tr-lighting", text: "ಬೆಳಕಿನ" },
-      { id: "tr-camera-lock", text: "ಕ್ಯಾಮರಾ ಲಾಕ್" },
-      { id: "tr-disable-satellites", text: "ಉಪಗ್ರಹಗಳನ್ನು ತೆಗೆದುಹಾಕಿ" },
-      { id: "tr-satellites-available", text: "ಉಪಗ್ರಹಗಳು ಲಭ್ಯವಿದೆ:" },
-    ],
-  },
 ];
 
 //SET UI STRINGS DEPENDING ON BROWSER LANGUAGE
 const userLang =
   navigator.language.slice(0, 2) || navigator.userLanguage.slice(0, 2);
-
 if (userLang !== undefined) {
   let translation = translations.find((tr) => {
     return tr.language === userLang;
@@ -517,7 +489,6 @@ const getData = async (targetUrl) => {
     setLoadingData(false);
   }
 };
-// Custom Styled FPS Counter
 // const updateFPScounter = () => {
 //   let fps = frameRateMonitor.lastFramesPerSecond;
 //   if (fps) {
@@ -540,7 +511,7 @@ const checkCameraZoom = () => {
 };
 
 const satUpdateInterval = setInterval(updateSatellites, satUpdateIntervalTime); //enables satellites positions update
-const frameRateMonitorInterval = setInterval(updateFPScounter, 500);
+// const frameRateMonitorInterval = setInterval(updateFPScounter, 500);
 scene.postUpdate.addEventListener(cameraIcrf); //enables camera lock at the start
 scene.postUpdate.addEventListener(orbitIcrf); //enables orbit lock at the start
 scene.postUpdate.addEventListener(updateOrbit); //enables orbit update
@@ -747,7 +718,7 @@ infoBtn.addEventListener("click", (e) => {
 });
 
 // Custom GeoCoder for Search Box
-function OpenStreetMapNominatimGeocoder() {}
+
 OpenStreetMapNominatimGeocoder.prototype.geocode = function (input) {
   const endpoint = "https://nominatim.openstreetmap.org/search";
   const resource = new Resource({
