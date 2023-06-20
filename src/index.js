@@ -24,6 +24,7 @@ import {
   Cartographic,
   Math,
   EntityCluster,
+  Resource,
 } from "cesium";
 
 // const fs = require("fs");
@@ -52,6 +53,7 @@ const viewer = new Viewer("cesiumContainer", {
   selectionIndicator: true,
   // sceneMode: SceneMode.SCENE2D,
   navigationHelpButton: false,
+  geocoder: new OpenStreetMapNominatimGeocoder(),
 });
 // viewer.scene.primitives.add(createOsmBuildings());
 
@@ -70,6 +72,7 @@ Camera.DEFAULT_VIEW_RECTANGLE = Rectangle.fromDegrees(-60, -40, 60, 80); //sets 
 // viewModel.selectedImagery = viewModel.imageryProviderViewModels[2]; //select default imageryProvider
 
 const scene = viewer.scene;
+scene.debugShowFramesPerSecond = true;
 const globe = viewer.scene.globe;
 const clock = viewer.clock;
 const entities = viewer.entities;
@@ -154,11 +157,39 @@ const translations = [
       { id: "tr-satellites-available", text: "Satellites available:" },
     ],
   },
+  {
+    language: "ta",
+    strings: [
+      { id: "tr-lighting", text: "விளக்கு" },
+      { id: "tr-camera-lock", text: "கேமரா பூட்டு" },
+      { id: "tr-disable-satellites", text: "செயற்கைக்கோள்களை அகற்று" },
+      { id: "tr-satellites-available", text: "குறிப்பான்களை அகற்று:" },
+    ],
+  },
+  {
+    language: "ml",
+    strings: [
+      { id: "tr-lighting", text: "ലൈറ്റിംഗ്" },
+      { id: "tr-camera-lock", text: "ക്യാമറ ലോക്ക്" },
+      { id: "tr-disable-satellites", text: "ഉപഗ്രഹങ്ങൾ നീക്കം ചെയ്യുക" },
+      { id: "tr-satellites-available", text: "ഉപഗ്രഹങ്ങൾ ലഭ്യമാണ്:" },
+    ],
+  },
+  {
+    language: "ka",
+    strings: [
+      { id: "tr-lighting", text: "ಬೆಳಕಿನ" },
+      { id: "tr-camera-lock", text: "ಕ್ಯಾಮರಾ ಲಾಕ್" },
+      { id: "tr-disable-satellites", text: "ಉಪಗ್ರಹಗಳನ್ನು ತೆಗೆದುಹಾಕಿ" },
+      { id: "tr-satellites-available", text: "ಉಪಗ್ರಹಗಳು ಲಭ್ಯವಿದೆ:" },
+    ],
+  },
 ];
 
 //SET UI STRINGS DEPENDING ON BROWSER LANGUAGE
 const userLang =
   navigator.language.slice(0, 2) || navigator.userLanguage.slice(0, 2);
+
 if (userLang !== undefined) {
   let translation = translations.find((tr) => {
     return tr.language === userLang;
@@ -191,14 +222,17 @@ document.getElementById("menu-button").onclick = () => {
     ? (o.style.display = "none")
     : (o.style.display = "block");
 };
-// disable satellites button
-document.getElementById("tr-disable-satellites").onclick = () => {
-  deleteSatellites();
-};
-// disable marker Button
+// Delete satellites button
+document
+  .getElementById("tr-disable-satellites")
+  .addEventListener("click", (e) => {
+    deleteSatellites();
+  });
+// Delete marker Button
 document.getElementById("tr-disable-markers").onclick = () => {
-  deleteMarkers();
+  deleteAllMarkers();
 };
+
 // any enable satellites button
 document.getElementsByName("enable-satellites").forEach(
   (el, i) =>
@@ -207,6 +241,7 @@ document.getElementsByName("enable-satellites").forEach(
       getData(TLEsources[i].url);
     })
 );
+
 //switch1
 const sw1 = document.getElementById("sw1");
 document.getElementById("sw1").onclick = () => {
@@ -216,6 +251,7 @@ document.getElementById("sw1").onclick = () => {
     globe.enableLighting = false;
   }
 };
+
 //switch2
 const sw2 = document.getElementById("sw2");
 sw2.onclick = () => {
@@ -237,10 +273,17 @@ const deleteSatellites = () => {
   });
 };
 
-// delete all Markers
+// delete Markers
 const deleteMarkers = () => {
+  markerId.forEach((item) => {
+    entities.removeById(item[0]);
+  });
+};
+
+// delete all Markers
+const deleteAllMarkers = () => {
   markerId.forEach((index) => {
-    entities.removeById(index);
+    entities.removeById(index[0]);
     markerId = [];
   });
 };
@@ -314,6 +357,11 @@ const addSatelliteMarker = ([satName, satrec]) => {
     <h3><b>Epochdays: </b>${satrec.epochdays}</h3>
     <h3><b>Epochyr: </b>${satrec.epochyr}</h3>
   </ul>`;
+  // markerId.forEach((item) => {
+  //   console.log(item.position);
+  //   // addMarker(item.position, true);
+  // });
+  console.log(markerId);
   deleteMarkers();
 };
 
@@ -461,7 +509,7 @@ const getData = async (targetUrl) => {
       }
       tempSatellitesData.forEach(function (sat) {
         addSatelliteMarker(sat);
-        console.log(sat);
+        // console.log(sat);
       }); //create point entities
 
       satellitesData.push(...tempSatellitesData); //add satellites to updated satellites array
@@ -469,12 +517,13 @@ const getData = async (targetUrl) => {
     setLoadingData(false);
   }
 };
-const updateFPScounter = () => {
-  let fps = frameRateMonitor.lastFramesPerSecond;
-  if (fps) {
-    document.getElementById("fps").innerText = fps.toFixed(0).toString();
-  }
-};
+// Custom Styled FPS Counter
+// const updateFPScounter = () => {
+//   let fps = frameRateMonitor.lastFramesPerSecond;
+//   if (fps) {
+//     document.getElementById("fps").innerText = fps.toFixed(0).toString();
+//   }
+// };
 const checkCameraZoom = () => {
   //changes state of camera lock switch depending on camera zoom
   setTimeout(() => {
@@ -529,6 +578,7 @@ let a = 0;
 let entity1;
 let cartesian;
 function addMarker(cartesian, visibility) {
+  console.log(markerId);
   entity1 = viewer.entities.add({
     billboard: {
       image: "Assets/Images/locationPin.png",
@@ -545,6 +595,7 @@ function addMarker(cartesian, visibility) {
 
   // entity.description = `Coordinates: ${cartesian}`;
 }
+
 // Mark Locations.
 handler.setInputAction(function (click) {
   cartesian = viewer.camera.pickEllipsoid(
@@ -563,7 +614,8 @@ handler.setInputAction(function (click) {
     entity1.label.text =
       `Lon: ${`   ${longitudeString}`.slice(-7)}\u00B0` +
       `\nLat: ${`   ${latitudeString}`.slice(-7)}\u00B0`;
-    markerId.push(entity1.id);
+
+    markerId.push([entity1.id, entity1.position]);
   } else {
     entity1.label.show = false;
   }
@@ -693,3 +745,32 @@ function showNav(e) {
 infoBtn.addEventListener("click", (e) => {
   showNav(e);
 });
+
+// Custom GeoCoder for Search Box
+function OpenStreetMapNominatimGeocoder() {}
+OpenStreetMapNominatimGeocoder.prototype.geocode = function (input) {
+  const endpoint = "https://nominatim.openstreetmap.org/search";
+  const resource = new Resource({
+    url: endpoint,
+    queryParameters: {
+      format: "json",
+      q: input,
+    },
+  });
+
+  return resource.fetchJson().then(function (results) {
+    let bboxDegrees;
+    return results.map(function (resultObject) {
+      bboxDegrees = resultObject.boundingbox;
+      return {
+        displayName: resultObject.display_name,
+        destination: Rectangle.fromDegrees(
+          bboxDegrees[2],
+          bboxDegrees[0],
+          bboxDegrees[3],
+          bboxDegrees[1]
+        ),
+      };
+    });
+  });
+};
