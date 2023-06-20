@@ -540,7 +540,7 @@ const checkCameraZoom = () => {
 };
 
 const satUpdateInterval = setInterval(updateSatellites, satUpdateIntervalTime); //enables satellites positions update
-const frameRateMonitorInterval = setInterval(updateFPScounter, 500);
+// const frameRateMonitorInterval = setInterval(updateFPScounter, 500);
 scene.postUpdate.addEventListener(cameraIcrf); //enables camera lock at the start
 scene.postUpdate.addEventListener(orbitIcrf); //enables orbit lock at the start
 scene.postUpdate.addEventListener(updateOrbit); //enables orbit update
