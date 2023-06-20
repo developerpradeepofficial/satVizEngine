@@ -24,7 +24,9 @@ import {
   Cartographic,
   Math,
   EntityCluster,
+  Resource,
 } from "cesium";
+
 // const fs = require("fs");
 import "cesium/Build/Cesium/Widgets/widgets.css";
 import "./css/main.css";
@@ -35,6 +37,7 @@ import "popper.js/dist/umd/popper.min.js";
 import "bootstrap/dist/js/bootstrap.min.js";
 const satellite = require("satellite.js");
 // Your access token can be found at: https://cesium.com/ion/tokens.
+
 // This is the default access token
 Ion.defaultAccessToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJlYWE1OWUxNy1mMWZiLTQzYjYtYTQ0OS1kMWFjYmFkNjc5YzciLCJpZCI6NTc3MzMsImlhdCI6MTYyNzg0NTE4Mn0.XcKpgANiY19MC4bdFUXMVEBToBmqS8kuYpUlxJHYZxk";
@@ -49,14 +52,15 @@ const viewer = new Viewer("cesiumContainer", {
   shouldAnimate: true,
   selectionIndicator: true,
   // sceneMode: SceneMode.SCENE2D,
+  navigationHelpButton: false,
+  geocoder: new OpenStreetMapNominatimGeocoder(),
 });
-const pin = new EntityCluster(false);
-viewer.scene.primitives.add(createOsmBuildings());
+// viewer.scene.primitives.add(createOsmBuildings());
+
 // Add Cesium OSM Buildings, a global 3D buildings layer.
-viewer.scene.primitives.add(createOsmBuildings());
+// viewer.scene.primitives.add(createOsmBuildings());
 
 // Create a new entity
-
 Camera.DEFAULT_VIEW_RECTANGLE = Rectangle.fromDegrees(-60, -40, 60, 80); //sets default view
 
 //REMOVE BING IMAGERY
@@ -65,9 +69,10 @@ Camera.DEFAULT_VIEW_RECTANGLE = Rectangle.fromDegrees(-60, -40, 60, 80); //sets 
 //   viewModel.imageryProviderViewModels.filter((el) => {
 //     return el.category !== "Cesium ion";
 //   });
-// viewModel.selectedImagery = viewModel.imageryProviderViewModels[0]; //select default imageryProvider
+// viewModel.selectedImagery = viewModel.imageryProviderViewModels[2]; //select default imageryProvider
 
 const scene = viewer.scene;
+scene.debugShowFramesPerSecond = true;
 const globe = viewer.scene.globe;
 const clock = viewer.clock;
 const entities = viewer.entities;
@@ -88,7 +93,7 @@ globe.nightFadeOutDistance = 10000000;
 
 document.getElementById("ui").style.visibility = "visible"; //makes options visible after loading javascript
 let satUpdateIntervalTime = 10; //update interval in ms
-const orbitSteps = 77; //number of steps in predicted orbit
+const orbitSteps = 33; //number of steps in predicted orbit
 let satellitesData = []; //currently displayed satellites TLE data (name, satrec)
 let displayedOrbit = undefined; //displayed orbit data [satrec, refresh time in seconds]
 let lastOrbitUpdateTime = JulianDate.now();
@@ -152,11 +157,39 @@ const translations = [
       { id: "tr-satellites-available", text: "Satellites available:" },
     ],
   },
+  {
+    language: "ta",
+    strings: [
+      { id: "tr-lighting", text: "விளக்கு" },
+      { id: "tr-camera-lock", text: "கேமரா பூட்டு" },
+      { id: "tr-disable-satellites", text: "செயற்கைக்கோள்களை அகற்று" },
+      { id: "tr-satellites-available", text: "குறிப்பான்களை அகற்று:" },
+    ],
+  },
+  {
+    language: "ml",
+    strings: [
+      { id: "tr-lighting", text: "ലൈറ്റിംഗ്" },
+      { id: "tr-camera-lock", text: "ക്യാമറ ലോക്ക്" },
+      { id: "tr-disable-satellites", text: "ഉപഗ്രഹങ്ങൾ നീക്കം ചെയ്യുക" },
+      { id: "tr-satellites-available", text: "ഉപഗ്രഹങ്ങൾ ലഭ്യമാണ്:" },
+    ],
+  },
+  {
+    language: "ka",
+    strings: [
+      { id: "tr-lighting", text: "ಬೆಳಕಿನ" },
+      { id: "tr-camera-lock", text: "ಕ್ಯಾಮರಾ ಲಾಕ್" },
+      { id: "tr-disable-satellites", text: "ಉಪಗ್ರಹಗಳನ್ನು ತೆಗೆದುಹಾಕಿ" },
+      { id: "tr-satellites-available", text: "ಉಪಗ್ರಹಗಳು ಲಭ್ಯವಿದೆ:" },
+    ],
+  },
 ];
 
 //SET UI STRINGS DEPENDING ON BROWSER LANGUAGE
 const userLang =
   navigator.language.slice(0, 2) || navigator.userLanguage.slice(0, 2);
+
 if (userLang !== undefined) {
   let translation = translations.find((tr) => {
     return tr.language === userLang;
@@ -181,6 +214,7 @@ TLEsources.forEach((src) => {
 
 //===============================================================
 //USER INTERFACE ACTIONS
+//===============================================================
 //menu button
 document.getElementById("menu-button").onclick = () => {
   let o = document.getElementById("options");
@@ -188,14 +222,17 @@ document.getElementById("menu-button").onclick = () => {
     ? (o.style.display = "none")
     : (o.style.display = "block");
 };
-// disable satellites button
-document.getElementById("tr-disable-satellites").onclick = () => {
-  deleteSatellites();
-};
-// disable marker Button
+// Delete satellites button
+document
+  .getElementById("tr-disable-satellites")
+  .addEventListener("click", (e) => {
+    deleteSatellites();
+  });
+// Delete marker Button
 document.getElementById("tr-disable-markers").onclick = () => {
-  deleteMarkers();
+  deleteAllMarkers();
 };
+
 // any enable satellites button
 document.getElementsByName("enable-satellites").forEach(
   (el, i) =>
@@ -204,6 +241,7 @@ document.getElementsByName("enable-satellites").forEach(
       getData(TLEsources[i].url);
     })
 );
+
 //switch1
 const sw1 = document.getElementById("sw1");
 document.getElementById("sw1").onclick = () => {
@@ -213,6 +251,7 @@ document.getElementById("sw1").onclick = () => {
     globe.enableLighting = false;
   }
 };
+
 //switch2
 const sw2 = document.getElementById("sw2");
 sw2.onclick = () => {
@@ -234,13 +273,21 @@ const deleteSatellites = () => {
   });
 };
 
-// delete all Markers
+// delete Markers
 const deleteMarkers = () => {
+  markerId.forEach((item) => {
+    entities.removeById(item[0]);
+  });
+};
+
+// delete all Markers
+const deleteAllMarkers = () => {
   markerId.forEach((index) => {
-    entities.removeById(index);
+    entities.removeById(index[0]);
     markerId = [];
   });
 };
+
 //camera lock functions
 const disableCamIcrf = () => {
   //locks camera on the globe
@@ -251,6 +298,7 @@ const enableCamIcrf = () => {
   //locks camera in space
   scene.postUpdate.addEventListener(cameraIcrf);
 };
+
 const cameraIcrf = (scene, time) => {
   if (scene.mode !== SceneMode.SCENE3D) {
     return;
@@ -273,52 +321,48 @@ const orbitIcrf = (scene, time) => {
 let satID = [],
   markerId = [];
 
+//===============================================================
+//Satellite Adding Function.
+//===============================================================
 const addSatelliteMarker = ([satName, satrec]) => {
   const posvel = satellite.propagate(
     satrec,
     JulianDate.toDate(clock.currentTime)
   );
+
   const gmst = satellite.gstime(JulianDate.toDate(clock.currentTime));
   const pos = Object.values(satellite.eciToEcf(posvel.position, gmst)).map(
     (el) => (el *= 1000)
   ); //position km->m
 
-  let sat = entities.add({
+  let sat = viewer.entities.add({
     name: satName,
     position: Cartesian3.fromArray(pos),
-
-    // point: {
-    //   pixelSize: 8,
-    //   color: Color.GREEEN,
-    // },
-
     billboard: {
-        image: "Assets/Images/satImg.png",
+      image: "Assets/Images/satImg.png",
     },
     label: {
       show: false,
       text: satName,
-      // showBackground: true,
+      showBackground: true,
       font: "12px monospace",
-      horizontalOrigin: HorizontalOrigin.LEFT,
-      verticalOrigin: VerticalOrigin.CENTER,
-      pixelOffset: new Cartesian2(10, 0),
-      eyeOffset: Cartesian3.fromElements(0, 0, -10000),
     },
   });
 
   satID.push(sat.id);
   sat.name = satName;
-  // Get satellite Velocity and Position
-  var positionAndVelocity = satellite.sgp4(satrec, new Date());
-  console.log(satrec);
   sat.description = `
   <ul>
     <h3><b>Satellite Number: </b>${satrec.satnum}</h3>
     <h3><b>Epochdays: </b>${satrec.epochdays}</h3>
     <h3><b>Epochyr: </b>${satrec.epochyr}</h3>
   </ul>`;
-  // console.log(positionAndVelocity.velocity);
+  // markerId.forEach((item) => {
+  //   console.log(item.position);
+  //   // addMarker(item.position, true);
+  // });
+  console.log(markerId);
+  deleteMarkers();
 };
 
 //ORBIT CALCULATION
@@ -351,7 +395,6 @@ const calculateOrbit = (satrec) => {
     //polyline material
     const polylineMaterial = new Material.fromType("Color"); //create polyline material
     polylineMaterial.uniforms.color = Color.BLUE; //set the material color
-
     polylines.removeAll();
     polylines.add({
       positions: orbitPoints,
@@ -466,7 +509,7 @@ const getData = async (targetUrl) => {
       }
       tempSatellitesData.forEach(function (sat) {
         addSatelliteMarker(sat);
-        console.log(sat);
+        // console.log(sat);
       }); //create point entities
 
       satellitesData.push(...tempSatellitesData); //add satellites to updated satellites array
@@ -474,12 +517,13 @@ const getData = async (targetUrl) => {
     setLoadingData(false);
   }
 };
-const updateFPScounter = () => {
-  let fps = frameRateMonitor.lastFramesPerSecond;
-  if (fps) {
-    document.getElementById("fps").innerText = fps.toFixed(0).toString();
-  }
-};
+// Custom Styled FPS Counter
+// const updateFPScounter = () => {
+//   let fps = frameRateMonitor.lastFramesPerSecond;
+//   if (fps) {
+//     document.getElementById("fps").innerText = fps.toFixed(0).toString();
+//   }
+// };
 const checkCameraZoom = () => {
   //changes state of camera lock switch depending on camera zoom
   setTimeout(() => {
@@ -531,76 +575,59 @@ handler.setInputAction((input) => {
   checkCameraZoom();
 }, ScreenSpaceEventType.WHEEL);
 let a = 0;
-
+let entity1;
+let cartesian;
 function addMarker(cartesian, visibility) {
-  const entity = entities.add({
-    // billboard: {
-    //   image: "src/locationPin.png",
-    //   scale: 0.5,
-    // },
-    point: {
-      pixelSize: 8,
-      color: Color.RED,
+  console.log(markerId);
+  entity1 = viewer.entities.add({
+    billboard: {
+      image: "Assets/Images/locationPin.png",
+      scale: 0.5,
     },
     label: {
       show: visibility,
-      position: cartesian,
       showBackground: true,
-      font: "16px monospace",
       horizontalOrigin: HorizontalOrigin.CENTER,
       verticalOrigin: VerticalOrigin.BOTTOM,
-      // pixelOffset: new Cartesian2(10, 0),
-      // eyeOffset: Cartesian3.fromElements(0, 0, -10000),
+      font: "12px monospace",
     },
   });
 
   // entity.description = `Coordinates: ${cartesian}`;
-  if (cartesian) {
-    handler.setInputAction(function (click) {
-      if (cartesian) {
-        const cartographic = Cartographic.fromCartesian(cartesian);
-        const longitudeString = Math.toDegrees(cartographic.longitude).toFixed(
-          2
-        );
-        const latitudeString = Math.toDegrees(cartographic.latitude).toFixed(2);
-        // Coordinates
-        console.log(longitudeString.slice(-7), latitudeString.slice(-7));
-        entity.position = cartesian;
-        entity.label.show = true;
-        entity.label.text =
-          `Lon: ${`   ${longitudeString}`.slice(-7)}\u00B0` +
-          `\nLat: ${`   ${latitudeString}`.slice(-7)}\u00B0`;
-        markerId.push(entity.id);
-      } else {
-        entity.label.show = false;
-      }
-    }, ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
-  } else {
-    entity.label.show = false;
-  }
 }
 
-//  Mark Places
-handler.setInputAction(function (movement) {
-  const cartesian = viewer.camera.pickEllipsoid(
-    movement.endPosition,
+// Mark Locations.
+handler.setInputAction(function (click) {
+  cartesian = viewer.camera.pickEllipsoid(
+    click.position,
     scene.globe.ellipsoid
   );
-  mousePosition = movement.endPosition;
+  if (cartesian) {
+    const cartographic = Cartographic.fromCartesian(cartesian);
+    const longitudeString = Math.toDegrees(cartographic.longitude).toFixed(2);
+    const latitudeString = Math.toDegrees(cartographic.latitude).toFixed(2);
+    addMarker(cartesian, true);
+    // Coordinates
+    console.log(longitudeString.slice(-7), latitudeString.slice(-7));
+    entity1.position = cartesian;
+    entity1.label.show = true;
+    entity1.label.text =
+      `Lon: ${`   ${longitudeString}`.slice(-7)}\u00B0` +
+      `\nLat: ${`   ${latitudeString}`.slice(-7)}\u00B0`;
 
-  addMarker(cartesian, true);
-}, ScreenSpaceEventType.MOUSE_MOVE);
+    markerId.push([entity1.id, entity1.position]);
+  } else {
+    entity1.label.show = false;
+  }
+}, ScreenSpaceEventType.LEFT_DOUBLE_CLICK);
 
 // Globe Navigation
-
 const canvas = viewer.canvas;
-canvas.setAttribute("tabindex", "0"); // needed to put focus on the canvas
 canvas.onclick = function () {
   canvas.focus();
 };
 
 const ellipsoid = scene.globe.ellipsoid;
-
 let startMousePosition;
 let mousePosition;
 const flags = {
@@ -704,3 +731,46 @@ viewer.clock.onTick.addEventListener(function (clock) {
     camera.moveRight(moveRate);
   }
 });
+
+let infoBtn = document.getElementById("infoBtn");
+let infoPanel = document.getElementById("infoPanel");
+function showNav(e) {
+  if (infoPanel.style.display == "block") {
+    infoPanel.style.display = "none";
+  } else {
+    infoPanel.style.display = "block";
+  }
+}
+
+infoBtn.addEventListener("click", (e) => {
+  showNav(e);
+});
+
+// Custom GeoCoder for Search Box
+function OpenStreetMapNominatimGeocoder() {}
+OpenStreetMapNominatimGeocoder.prototype.geocode = function (input) {
+  const endpoint = "https://nominatim.openstreetmap.org/search";
+  const resource = new Resource({
+    url: endpoint,
+    queryParameters: {
+      format: "json",
+      q: input,
+    },
+  });
+
+  return resource.fetchJson().then(function (results) {
+    let bboxDegrees;
+    return results.map(function (resultObject) {
+      bboxDegrees = resultObject.boundingbox;
+      return {
+        displayName: resultObject.display_name,
+        destination: Rectangle.fromDegrees(
+          bboxDegrees[2],
+          bboxDegrees[0],
+          bboxDegrees[3],
+          bboxDegrees[1]
+        ),
+      };
+    });
+  });
+};
