@@ -311,7 +311,7 @@ const addSatelliteMarker = ([satName, satrec]) => {
     name: satName,
     position: Cartesian3.fromArray(pos),
     billboard: {
-      image: "src/satImg.png",
+      image: "Assets/Images/satImg.png",
     },
     label: {
       show: false,
@@ -552,7 +552,7 @@ function addMarker(cartesian, visibility) {
   console.log(markerId);
   entity1 = viewer.entities.add({
     billboard: {
-      image: "src/locationPin.png",
+      image: Assets/Images/locationPin.png",
       scale: 0.5,
     },
     label: {
