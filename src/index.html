@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
@@ -6,6 +7,17 @@
       content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
     />
     <title>Team Infinity</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
   </head>
   <body>
     <noscript>Your browser does not support JavaScript!</noscript>
@@ -56,12 +68,56 @@
         <div id="bar"></div>
       </div>
 
-      <div id="fps-counter" class="toolbar">FPS: <span id="fps"></span></div>
+      <!-- <div id="fps-counter" class="toolbar">FPS: <span id="fps"></span></div> -->
     </div>
+    <div class="infoBtnContainer">
+      <button class="infoBtn" id="infoBtn">
+        <i class="fa-solid fa-question"></i>
+      </button>
+      <ul class="infoPanel" id="infoPanel">
+        <li>w/s - move forward/backward</li>
+        <li>a/d - move left/right</li>
+        <li>q/e - move up/down</li>
+      </ul>
+    </div>
+    <div class="container-contact" id="container-contact">
+      <div class="wrap-contact">
+        <form class="contact-form validate-form">
+          <span class="contact-form-title">What You wanna Visualize ???</span>
+          <div
+            class="wrap-input validate-input"
+            data-validate="Please enter your name"
+          >
+            <input
+              class="input"
+              type="text"
+              name="coorinates"
+              placeholder="Coordinates"
+              id="coordinates"
+            />
+            <span class="focus-input"></span>
+          </div>
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
+          <div
+            class="wrap-input validate-input"
+            data-validate="Please enter your phone"
+          >
+            <select name="sceneMode" id="sceneMode" class="input">
+              <option value="2d">2D</option>
+              <option value="3d" selected>3D</option>
+              <option value="colambus">Colambus View</option>
+            </select>
+            <span class="focus-input"></span>
+          </div>
+
+          <div class="container-contact-form-btn">
+            <button class="contact-form-btn" id="visualize">
+              <span> Visualize </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="dropDownSelect1"></div>
   </body>
 </html>

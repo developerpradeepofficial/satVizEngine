@@ -1,69 +1,198 @@
-<head><script defer src="app.js"></script></head>Html Webpack Plugin:
-<pre>
-  Error: Child compilation failed:
-  Module not found: Error: Can't resolve 'D:\Web_dev\satVizEngine\src\index.html' in 'D:\Web_dev\satVizEngine'
-  ModuleNotFoundError: Module not found: Error: Can't resolve 'D:\Web_dev\satVizEngine\src\index.html' in 'D:\Web_dev\satVizEngine'
-      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\Compilation.js:2022:28
-      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:817:13
-      at eval (eval at create (D:\Web_dev\satVizEngine\node_modules\tapable\lib\HookCodeFactory.js:33:10), <anonymous>:10:1)
-      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:275:22
-      at eval (eval at create (D:\Web_dev\satVizEngine\node_modules\tapable\lib\HookCodeFactory.js:33:10), <anonymous>:9:1)
-      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:448:22
-      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:118:11
-      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:689:25
-      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:893:8
-      at D:\Web_dev\satVizEngine\node_modules\webpack\lib\NormalModuleFactory.js:1013:5
-  
-  - Compilation.js:2022 
-    [satVizEngine]/[webpack]/lib/Compilation.js:2022:28
-  
-  - NormalModuleFactory.js:817 
-    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:817:13
-  
-  
-  - NormalModuleFactory.js:275 
-    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:275:22
-  
-  
-  - NormalModuleFactory.js:448 
-    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:448:22
-  
-  - NormalModuleFactory.js:118 
-    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:118:11
-  
-  - NormalModuleFactory.js:689 
-    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:689:25
-  
-  - NormalModuleFactory.js:893 
-    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:893:8
-  
-  - NormalModuleFactory.js:1013 
-    [satVizEngine]/[webpack]/lib/NormalModuleFactory.js:1013:5
-  
-  - child-compiler.js:169 
-    [satVizEngine]/[html-webpack-plugin]/lib/child-compiler.js:169:18
-  
-  - Compiler.js:551 finalCallback
-    [satVizEngine]/[webpack]/lib/Compiler.js:551:5
-  
-  - Compiler.js:577 
-    [satVizEngine]/[webpack]/lib/Compiler.js:577:11
-  
-  - Compiler.js:1199 
-    [satVizEngine]/[webpack]/lib/Compiler.js:1199:17
-  
-  
-  - Hook.js:18 Hook.CALL_ASYNC_DELEGATE [as _callAsync]
-    [satVizEngine]/[tapable]/lib/Hook.js:18:14
-  
-  - Compiler.js:1195 
-    [satVizEngine]/[webpack]/lib/Compiler.js:1195:33
-  
-  - Compilation.js:2795 finalCallback
-    [satVizEngine]/[webpack]/lib/Compilation.js:2795:11
-  
-  - Compilation.js:3100 
-    [satVizEngine]/[webpack]/lib/Compilation.js:3100:11
-  
-  
-</pre>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"
+    />
+    <title>Team Infinity</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  <link rel="icon" href="assets/favicon.ico"><script defer src="app.js"></script></head>
+  <body>
+    <noscript>Your browser does not support JavaScript!</noscript>
+    <div id="cesiumContainer"></div>
+
+    <div id="ui" style="visibility: hidden">
+      <button
+        class="cesium-button"
+        type="button"
+        id="menu-button"
+        class="toolbar"
+        title="Menu"
+      >
+        <i class="fa fa-bars"></i>
+      </button>
+
+      <div id="options" class="toolbar">
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="sw1" />
+          <label class="custom-control-label" for="sw1" id="tr-lighting"
+            >Lighting</label
+          >
+        </div>
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="sw2" />
+          <label class="custom-control-label" for="sw2" id="tr-camera-lock"
+            >Camera lock</label
+          >
+        </div>
+
+        <div class="rows">
+          <button
+            class="cesium-button"
+            type="button"
+            id="tr-disable-satellites"
+          >
+            Remove satellites
+          </button>
+          <button class="cesium-button" type="button" id="tr-disable-markers">
+            Remove Markers
+          </button>
+          <h4 id="tr-satellites-available">Satellites available:</h4>
+          <div id="buttons-entry-point"></div>
+        </div>
+      </div>
+
+      <div id="progress-bar" class="toolbar" style="visibility: hidden">
+        <div id="bar"></div>
+      </div>
+
+      <!-- <div id="fps-counter" class="toolbar">FPS: <span id="fps"></span></div> -->
+    </div>
+    <div class="infoBtnContainer">
+      <button class="infoBtn" id="infoBtn">
+        <i class="fa-solid fa-question"></i>
+      </button>
+      <ul class="infoPanel" id="infoPanel">
+        <li>w/s - move forward/backward</li>
+        <li>a/d - move left/right</li>
+        <li>q/e - move up/down</li>
+      </ul>
+    </div>
+    <div class="container-contact">
+      <div class="wrap-contact">
+        <form class="contact-form validate-form">
+          <span class="contact-form-title">What You wanna Visualize ???</span>
+          <div
+            class="wrap-input validate-input"
+            data-validate="Please enter your name"
+          >
+            <input
+              class="input"
+              type="text"
+              name="coorinates"
+              placeholder="Coordinates"
+            />
+            <span class="focus-input"></span>
+          </div>
+          <!-- <div
+            class="wrap-input validate-input"
+            data-validate="Please enter your email: e@a.x"
+          >
+            <input
+              class="input"
+              type="text"
+              name="email"
+              placeholder="E-mail"
+            />
+            <span class="focus-input"></span>
+          </div> -->
+          <div
+            class="wrap-input validate-input"
+            data-validate="Please enter your phone"
+          >
+            <select name="sceneMode" id="sceneMode" class="input">
+              <option value="2d">2D</option>
+              <option value="3d" selected>3D</option>
+              <option value="colambus">Colambus View</option>
+            </select>
+            <span class="focus-input"></span>
+          </div>
+
+          <div class="container-contact-form-btn">
+            <button class="contact-form-btn">
+              <span>
+                <i class="fa fa-paper-plane-o m-r-6" aria-hidden="true"></i>
+                Visualize
+              </span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div id="dropDownSelect1"></div>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+      integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/animsition/3.2.1/js/animsition.min.js"
+      integrity="sha512-A6ariLe+TnwXgF0FtGuOAZB4MuNxxS1W+NvJZxN3fcXYtcrxHu7Z8yJ2MBk7MwnZuG70ksTGdAUyUEbbXW6Imw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.8/umd/popper.min.js"
+      integrity="sha512-TPh2Oxlg1zp+kz3nFA0C5vVC6leG/6mm1z9+mA81MI5eaUVqasPLO8Cuk4gMF4gUfP5etR73rgU/8PNMsSesoQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"
+      integrity="sha512-3dZ9wIrMMij8rOH7X3kLfXAzwtcHpuYpEgQg1OA4QAob1e81H8ntUQmQm3pBudqIoySO5j0tHN4ENzA6+n2r4w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"
+      integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+
+    <script src="./moment.min.js"></script>
+    <script src="./daterangepicker.js"></script>
+
+    <script src="./countertime.js"></script>
+
+    <script src="./main.js"></script>
+
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "UA-23581568-13");
+    </script>
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js/v52afc6f149f6479b8c77fa569edb01181681764108816"
+      integrity="sha512-jGCTpDpBAYDGNYR5ztKt4BQPGef1P0giN6ZGVUi835kFF88FOmmn8jBQWNgrNd8g/Yu421NdgWhwQoaOPFflDw=="
+      data-cf-beacon='{"rayId":"7e275772bb502e70","token":"cd0b4b3a733644fc843ef0b185f98241","version":"2023.4.0","si":}'
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
