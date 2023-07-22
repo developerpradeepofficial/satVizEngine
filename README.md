@@ -9,10 +9,10 @@
 💡 You can add the given satellites using the menu bar in the top left corner and by clicking any of the satellite names you can add the satellites.
 
 </aside>
-![Screenshot 2023-06-20 170544](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/2d1cfda6-a5bd-4aaf-a064-c5ad4983a8d8)
 
+![Screenshot 2023-06-20 170643](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/6b50bd0a-e191-4bb0-a25c-2b61b112041e)
 
-![Uploading Screenshot 2023-06-20 170643.png…]()
+![Screenshot 2023-06-20 170544](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/1dac2ea8-b560-4b79-8df4-b0c9339bb25e)
 
 
 - Option Description
@@ -30,8 +30,8 @@
 </aside>
 
 ## Viewing Satellite Paths:
-![Uploading Screenshot 2023-06-20 171141.png…]()
 
+![Screenshot 2023-06-20 171141](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/d9141630-be12-4025-a6c2-a8ce048665b9)
 
 
 <aside>
@@ -39,6 +39,7 @@
 
 </aside>
 
+![Screenshot 2023-06-20 172420](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/84ffb337-a076-4a9d-b8bf-80fa2a383536)
 
 
 <aside>
@@ -46,9 +47,11 @@
 
 </aside>
 
+![Screenshot 2023-06-20 172854](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/afc06a4f-d3a8-4b0c-94ba-68e108b682ae)
 
 - You can type any location and enter the coordinates to search and focus on a location just like Google Maps
 - By clicking the home icon you can find or reinitialize the globe position to the initial position.
+![Screenshot 2023-06-20 172909](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/04218ab9-b275-4893-9a38-7daff1a10465)
 
 
 <aside>
@@ -56,6 +59,7 @@
 
 </aside>
 
+![Screenshot 2023-06-20 172923](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/5106362f-19b1-4398-9189-c8123bdfff4d)
 
 <aside>
 💡 You can change the view mode (3D, 2D, Columbus view) just by clicking the mode selection icon that's visible on the top right corner of the window.
@@ -63,9 +67,7 @@
 </aside>
 
 # Sample Outputs:
+![Screenshot 2023-06-20 174725](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/143f50cf-01e1-4b51-badd-00e1fff1a0b5)
 
-![Uploading Screenshot 2023-06-20 174725.png…]()
-
-![Uploading Screenshot 2023-06-20 175036.png…]()
-
-![Uploading Screenshot 2023-06-20 175259.png…]()
+![Screenshot 2023-06-20 175036](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/2cba070d-0a0c-4a84-9fbb-f06625417395)
+![Screenshot 2023-06-20 175259](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/f2e1729d-80d8-4bfb-9bad-e5d935b03a57)
