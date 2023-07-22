@@ -11,7 +11,7 @@
 </aside>
 ![Screenshot 2023-06-20 170544.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/41a0610a-84bc-4e05-ad04-dd3d73aa4a64/Screenshot_2023-06-20_170544.png)
 
-![Screenshot 2023-06-20 170643.png]([https://s3-us-west-2.amazonaws.com/secure.notion-static.com/bb0dab66-05c0-48cc-b9f2-ac3103d98350/Screenshot_2023-06-20_170643.png](https://github.com/developerpradeepofficial/satVizEngine/blob/main/outPutSS/Screenshot%202023-06-20%20170643.png))
+![Screenshot 2023-06-20 170643.png](https://github.com/developerpradeepofficial/satVizEngine/blob/main/outPutSS/Screenshot%202023-06-20%20170643.png)
 
 - Option Description
     1. **Lighting:** show the day and night mode of the earth.
