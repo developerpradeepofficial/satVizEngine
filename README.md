@@ -1,4 +1,5 @@
- This project was developed as a solution to a problem statement provided by AugSense Lab in Kerala India. The web application is designed to visualize satellite data and its path and to analyze various data in multiple view modes. The tool is specifically created for researchers and scientists who are interested in satellite data analysis. Thank you for checking out my project and feel free to explore the code!
+### Satellite Visual engine
+This project was developed as a solution to a problem statement provided by AugSense Lab in Kerala India. The web application is designed to visualize satellite data and its path and to analyze various data in multiple view modes. The tool is specifically created for researchers and scientists who are interested in satellite data analysis. Thank you for checking out my project and feel free to explore the code!
 
 ### Team Infinity - AugSense Software Project ProtoSem 5.1
 
@@ -7,16 +8,14 @@
 
 <aside>
 💡 You can add the given satellites using the menu bar in the top left corner and by clicking any of the satellite names you can add the satellites.
-
 </aside>
 
 ![Screenshot 2023-06-20 170643](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/6b50bd0a-e191-4bb0-a25c-2b61b112041e)
 
 ![Screenshot 2023-06-20 170544](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/1dac2ea8-b560-4b79-8df4-b0c9339bb25e)
 
-
 - Option Description
-    1. **Lighting:** show the day and night mode of the earth.
+    1. **Lighting:** Show the day and night mode of the earth.
     2. **Camera lock:** Locking the camer**a.**
     3. **Remove Satellites:** Remove all active satellites.
     4. ****Remove Markers:**** Remove all the active marked Locations**.**
@@ -33,14 +32,12 @@
 
 ![Screenshot 2023-06-20 171141](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/d9141630-be12-4025-a6c2-a8ce048665b9)
 
-
 <aside>
 💡 You can view the path and data of a satellite just by clicking on it.
 
 </aside>
 
 ![Screenshot 2023-06-20 172420](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/84ffb337-a076-4a9d-b8bf-80fa2a383536)
-
 
 <aside>
 💡 You can just turn the Angle of the compass to past and future positions
@@ -56,16 +53,11 @@
 
 <aside>
 💡 By clicking the skin button on the top right corner of the page you can just change the view mode and skins of the globe (Terrain, Road Maps, HillShade, etc.).
-
 </aside>
-
 ![Screenshot 2023-06-20 172923](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/5106362f-19b1-4398-9189-c8123bdfff4d)
-
 <aside>
 💡 You can change the view mode (3D, 2D, Columbus view) just by clicking the mode selection icon that's visible on the top right corner of the window.
-
 </aside>
-
 # Sample Outputs:
 ![Screenshot 2023-06-20 174725](https://github.com/developerpradeepofficial/satVizEngine/assets/79619944/143f50cf-01e1-4b51-badd-00e1fff1a0b5)
 
