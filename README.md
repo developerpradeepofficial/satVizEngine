@@ -1,4 +1,4 @@
-### Satellite Visual engine
+# Satellite Visual engine
 This project was developed as a solution to a problem statement provided by AugSense Lab in Kerala India. The web application is designed to visualize satellite data and its path and to analyze various data in multiple view modes. The tool is specifically created for researchers and scientists who are interested in satellite data analysis. Thank you for checking out my project and feel free to explore the code!
 
 ### Team Infinity - AugSense Software Project ProtoSem 5.1
